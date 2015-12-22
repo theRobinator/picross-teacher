@@ -1,0 +1,9 @@
+*~
+*.c
+*.h
+*.so
+*.dll
+*.pyc
+.idea
+.DS_Store
+/build

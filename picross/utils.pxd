@@ -1,0 +1,6 @@
+cdef list stack_left(list hints, list current_marks)
+cdef list stack_right(list hints, list current_marks)
+cdef list brute_force_stack(list stacked, list current_marks, int start_index, int step, bint find_next=?)
+cdef list blocks_to_array(list block_list, int board_width)
+cdef tuple _stack_markedblocks(list hints, int board_length)
+cdef bint _conflicts(list marked_blocks, list correct_array)
