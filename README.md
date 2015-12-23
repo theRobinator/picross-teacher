@@ -26,18 +26,24 @@ require logic chains (which are too hard for humans anyway, IMO).
 ## Running
 
 This program is written in [Cython](http://cython.org), which means that you'll
-need Cython installed in order to use it. Once you have it, run
+need a C compiler installed in order to build it. Once you have that, run
 
 ```python setup.py compile```
 
-to compile, then run
+to compile. After you do that, you can either run
 
-```python test.py <puzzle_file_name>```
+```python test.py [puzzle_file_name]```
 
-to solve a puzzle from the test puzzles folder.
+to solve a puzzle from the test puzzles folder, or
+
+```python serve.py [puzzle_file_name]```
+
+to start up the local webserver with the web interface at http://localhost:8080.
 
 
 ## Roadmap
 
-* Local server + web interface for interactive solving
+* Display technique tutorials in the web interface
 * Make your own puzzles from images
+* Use native arrays instead of lists for speed
+* Create pre-compiled distros

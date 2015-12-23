@@ -65,7 +65,8 @@ class CompileCommand(build_ext):
 setup_options = setup(
     name=path.basename(path.realpath(__file__)),
     install_requires=[
-        'cython >= 0.23.4'
+        'cython >= 0.23.4',
+        'cherrypy >= 4.0.0'
     ],
     cmdclass={
         'clean': CleanCommand,

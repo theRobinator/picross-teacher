@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Picross Teacher</title>
+        <link rel="stylesheet" href="/static/css/index.css" />
+        <script type="text/javascript" src="/static/js/angular.min.js"></script>
+        <script type="text/javascript" src="/static/js/index.js"></script>
+    </head>
+    <body>
+        <div class="app" ng-controller="appCtrl" ng-click="clearHighlight()" ng-mouseup="stopMarking()" ng-mouseleave="stopMarking()" ng-keydown="handleKeyDown($event)" ng-keyup="handleKeyUp($event)" ng-cloak>
+            <div class="controls">
+                <p class="control-section-title">Actions</p>
+                <div class="buttons">
+                    <button class="hint-button" ng-click="getHint(); $event.stopPropagation()" ng-disabled="inputDisabled">Get hint</button>
+                    <button class="hint-button" ng-click="finishPuzzle(); $event.stopPropagation()" ng-disabled="inputDisabled" ng-hide="autoPlaying">Auto-play</button>
+                    <button class="hint-button" ng-click="stopAutoPlay()" ng-show="autoPlaying">Stop</button>
+                </div>
+                
+                <p class="control-section-title">Hint</p>
+                <div class="hint-explanation">
+                    {{hintExplanation}}
+                </div>
+                
+                <p class="control-section-title">Controls</p>
+                <div class="control-switches">
+                    <p class="radio-line">
+                        <input type="radio" id="key-controls-yes" name="keyboard-controls" ng-model="keyboardControls" ng-value="true">
+                        <label for="key-controls-yes">Keyboard: WASD+,. or arrows+ZX</label>
+                    </p>
+                    <p class="radio-line">
+                        <input type="radio" id="key-controls-no" name="keyboard-controls" ng-model="keyboardControls" ng-value="false">
+                        <label for="key-controls-no">Mouse: Click & drag</label>
+                    </p>
+                </div>
+            </div>
+            
+            <table class="full-puzzle">
+                <thead class="puzzle-header">
+                    <tr>
+                        <th class="puzzle-image"></th>
+                        <th class="top-hints-container" ng-repeat="hintList in board.topHints track by $index" ng-class="{'fifth-column': $index %% 5 == 0}">
+                            <div class="hint-item top-hint" ng-repeat="hint in hintList track by $index">
+                                {{hint}}
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="puzzle-row" ng-repeat="row in board.rows track by $index">
+                        <td class="side-hints-container" ng-class="{'fifth-row': $index %% 5 == 0}">
+                            <span class="hint-item side-hint" ng-repeat="hint in board.sideHints[$index] track by $index">
+                                {{hint}}
+                            </span>
+                        </td>
+                        <td class="puzzle-cell" ng-repeat="cell in row track by $index"
+                            tabindex="{{$parent.$index * rowLength + $index}}"
+                            id="cell{{$parent.$index * rowLength + $index}}"
+                            ng-class="{'black-cell': cell.marking == 2, 'white-cell': cell.marking == 1, 'highlighted-cell': cell.highlighted, 'focused-cell': cell === focusedCell, 'fifth-row': $parent.$index %% 5 == 0, 'fifth-column': $index %% 5 == 0}"
+                            ng-mousedown="handleMouse(cell, $event)" ng-mouseover="handleMouseover(cell)"
+                        ></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script type="text/javascript">
+            picross.initialize(%(boardJson)s);
+        </script>
+    </body>
+</html>

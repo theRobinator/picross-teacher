@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #FFFFFA;
+    padding-top: 0.5rem;
+}
+
+.app {
+    white-space: nowrap;
+}
+
+.full-puzzle {
+    border-collapse: collapse;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 2rem;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.top-hints-container {
+    vertical-align: bottom;
+    font-weight: normal;
+    border-right: 1px solid #666;
+}
+
+.side-hints-container {
+    text-align: right;
+    line-height: 1.5rem;
+    padding-right: 0.5rem;
+    border-bottom: 1px solid #666;
+}
+
+.fifth-row {
+    border-top: 3px solid #666 !important;
+}
+
+.fifth-column {
+    border-left: 3px solid #666 !important;
+}
+
+.hint-item {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.side-hint {
+    display: inline-block;
+}
+
+.puzzle-cell {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid #666;
+}
+
+.black-cell {
+    background: #000;
+}
+
+.white-cell {
+    background: #CCC;
+}
+
+.highlighted-cell {
+    background: #0F0;
+    -webkit-box-shadow: 1px 1px 5px 5px #0C0;
+    -moz-box-shadow: 1px 1px 5px 5px #0C0;
+    box-shadow: 1px 1px 5px 4px #0C0;
+}
+
+.focused-cell {
+    -webkit-box-shadow: inset 0px 0px 5px 5px #0C0;
+    -moz-box-shadow: inset 0px 0px 1px 1px #0C0;
+    box-shadow: inset 0px 0px 1px 1px #0FF;
+}
+
+.controls {
+    display: inline-block;
+    width: 30%;
+    max-width: 18rem;
+    margin-left: 1rem;
+    white-space: normal;
+}
+
+.buttons {
+    text-align: center;
+}
+
+.hint-button {
+    width: 40%;
+    height: 2rem;
+    border-radius: 5px;
+    background: white;
+    font-size: 90%;
+}
+
+.control-section-title {
+    font-size: 80%;
+    border-bottom: 1px solid #666;
+    margin-top: 1rem;
+}
+
+.radio-line {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}

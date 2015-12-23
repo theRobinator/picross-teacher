@@ -86,17 +86,19 @@ cdef class SimpleBoxes(object):
         cdef list moves = []
         cdef int current_hint = 0, match_count = 0, matches_needed = 0, i, x1, x2, y1, y2
         
-        cdef str move_name
+        cdef str move_name, move_label
         if is_rows:
             move_name = 'Punctuation: rows'
+            move_label = 'row'
         else:
             move_name = 'Punctuation: columns'
+            move_label = 'column'
             
         for i in xrange(len(left_array)):
             marking = left_array[i]
             if marking == 0:
                 if match_count == matches_needed and match_count > 0:
-                    reason = 'This block of %d is complete, so it can be surrounded by spaces' % match_count
+                    reason = 'The block of %d in this %s is complete, so it can be surrounded by spaces' % (match_count, move_label)
                     previous_index = i - match_count - 1
                     if is_rows:
                         x1 = previous_index
@@ -125,7 +127,7 @@ cdef class SimpleBoxes(object):
                 match_count = 0
         
         if match_count == matches_needed and match_count > 0:
-            reason = 'This block of %d is complete, so it can be surrounded by spaces' % match_count
+            reason = 'The block of %d in this %s is complete, so it can be surrounded by spaces' % (match_count, move_label)
             previous_index = i - match_count
             if is_rows:
                 x1 = previous_index
