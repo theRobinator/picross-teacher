@@ -43,7 +43,6 @@ to start up the local webserver with the web interface at http://localhost:8080.
 
 ## Roadmap
 
-* Display technique tutorials in the web interface
 * Make your own puzzles from images
 * Use native arrays instead of lists for speed
 * Create pre-compiled distros
