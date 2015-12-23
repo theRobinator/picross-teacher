@@ -28,7 +28,7 @@ require logic chains (which are too hard for humans anyway, IMO).
 This program is written in [Cython](http://cython.org), which means that you'll
 need a C compiler installed in order to build it. Once you have that, run
 
-```python setup.py compile```
+```python setup.py compile --inplace```
 
 to compile. After you do that, you can either run
 
