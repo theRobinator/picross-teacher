@@ -1,0 +1,84 @@
+<div ng-switch on="hintName">
+    <div ng-switch-when="Simple Boxes">
+        <h3>Simple Boxes</h3>
+        <p>
+            By testing the left- and right-most positions of the blocks in a row, we can
+            find cells that must be filled no matter what. For example, in a row with hints
+            of 4 and 3, the third, fourth, and eighth cells can be filled in:
+        </p>
+        <p class="method-image">
+            <img src="/static/images/simpleboxes.png">
+        </p>
+        <p>
+            However, the sixth cell cannot be filled in; this strategy only applies to
+            cells where one block overlaps with itself. In this case, it's possible to move
+            the block of four one space to the left, meaning that the sixth cell no longer
+            overlaps.
+        </p>
+    </div>
+    <div ng-switch-when="Simple Spaces">
+        <h3>Simple Spaces</h3>
+        <p>
+            When cells in a row are already filled, it limits the possible possitions of
+            the blocks in that row. Cells that are outside all possible positions can be
+            marked empty. For example:
+        </p>
+        <p class="method-image">
+            <img src="/static/images/simplespaces.png">
+        </p>
+        <p>
+            Since the block of 3 can only fill the 2nd through 5th cells, the rest of the
+            cells can be marked as spaces.
+        </p>
+    </div>
+    <div ng-switch-when="Punctuation">
+        <h3>Punctuation</h3>
+        <p>
+            When you're sure that a block of cells is complete, it can be safely surrounded
+            by spaces.
+        </p>
+        <p class="method-image">
+            <img src="/static/images/punctuation.gif">
+        </p>
+    </div>
+    <div ng-switch-when="Completion">
+        <h3>Completion</h3>
+        <p>
+            When all the blocks in a row are complete, the remaining cells can be filled in
+            with spaces.
+        </p>
+        <p class="method-image">
+            <img src="/static/images/completion.gif">
+        </p>
+    </div>
+    <div ng-switch-when="Inner Spaces">
+        <h3>Inner Spaces</h3>
+        <p>
+            Cells between filled-in boxes can be marked as spaces even if the matching cells
+            are not shared between blocks. For example, the first filled-in block could be
+            the 2 or 1 block:
+        </p>
+        <p class="method-image">
+            <img src="/static/images/innerspaces.gif">
+        </p>
+        <p>
+            However, in either case there must be a space in the sixth cell.
+        </p>
+    </div>
+    <div ng-switch-when="Forced Boxes">
+        <h3>Forced Boxes</h3>
+        <p>
+            When placing a space in a cell would lead to a row that can't be completed, that
+            cell can be marked as a box. For example, a space in the fourth cell below would
+            lead to a row with two separate blocks in it:
+        </p>
+        <p class="method-image">
+            <img src="/static/images/forcedboxes.gif">
+        </p>
+        <p>
+            Since there is only one hint in this row, it must have only one block, and so
+            the fourth cell must be filled in.
+        </p>
+    </div>
+    
+</div>

@@ -28,7 +28,7 @@ cdef class FinalSpaces(object):
                     possible_moves.append(i)
             if marked_sum == hint_sum:
                 for i in possible_moves:
-                    moves.append(Move(column_index, i, cellmarking.WHITE, 'Column completion', 'This column is complete, so the remaining spaces can be filled in'))
+                    moves.append(Move(column_index, i, cellmarking.WHITE, 'Completion', 'This column is complete, so the remaining spaces can be filled in.'))
 
         for row_index in xrange(board_height):
             if board.is_row_complete(row_index):
@@ -45,7 +45,7 @@ cdef class FinalSpaces(object):
                     possible_moves.append(i)
             if marked_sum == hint_sum:
                 for i in possible_moves:
-                    moves.append(Move(i, row_index, cellmarking.WHITE, 'Row completion', 'This row is complete, so the remaining spaces can be filled in'))
+                    moves.append(Move(i, row_index, cellmarking.WHITE, 'Completion', 'This row is complete, so the remaining spaces can be filled in.'))
         
         Move.remove_dupes(moves)
         

@@ -76,6 +76,7 @@ def moves_to_json(moves):
             'x': move.x,
             'y': move.y,
             'marking': move.marking,
+            'name': move.name,
             'description': move.description
         })
     return json.dumps(result)

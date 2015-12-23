@@ -109,3 +109,21 @@ body {
     margin-top: 0.5rem;
     margin-bottom: 0;
 }
+
+.method-description {
+    position: absolute;
+    left: 5rem;
+    background: #FFF;
+    width: 20rem;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    -webkit-box-shadow: 3px 3px 10px 0px #000;
+    -moz-box-shadow: 3px 3px 10px 0px #000;
+    box-shadow: 3px 3px 10px 0px #000;
+    
+    padding: 0.5rem;
+}
+
+.method-image {
+    text-align: center;
+}

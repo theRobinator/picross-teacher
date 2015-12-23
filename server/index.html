@@ -17,6 +17,10 @@
                 
                 <p class="control-section-title">Hint</p>
                 <div class="hint-explanation">
+                    <a ng-show="hintName" href="javascript:false" ng-mouseover="showMethodDescription(true)" ng-mouseout="showMethodDescription(false)">{{hintName}}:</a>
+                    <div class="method-description" ng-show="methodDescriptionVisible" ng-include="'/static/html/methoddescriptions.html'">
+                        {{methodDescription}}
+                    </div>
                     {{hintExplanation}}
                 </div>
                 

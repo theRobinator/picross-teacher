@@ -76,12 +76,12 @@ cdef class BruteForce(object):
             if marking != -1 and current_array[i] == -1:
                 if marking == 0:
                     cell_marking = cellmarking.WHITE
-                    move_name = 'Inner spaces: %ss' % move_suffix
-                    label = 'The blocks in this %s cannot reach to this cell, so it must be empty' % move_suffix
+                    move_name = 'Inner Spaces'
+                    label = 'The blocks in this %s cannot reach to this cell, so it must be empty.' % move_suffix
                 else:
                     cell_marking = cellmarking.BLACK
-                    move_name = 'Forced boxes: %ss' % move_suffix
-                    label = 'This cell is filled no matter how this %s is filled in' % move_suffix
+                    move_name = 'Forced Boxes'
+                    label = 'This cell is filled no matter how this %s is filled in.' % move_suffix
                 if is_rows:
                     x = i
                     y = board_index

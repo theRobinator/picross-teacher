@@ -19,7 +19,10 @@ angular.module(PAGE_NAME, [])
         var focusX_, focusY_;
         $scope['board'] = dataService.board;
         $scope['rowLength'] = dataService.board.rows[0].length;
+        $scope['hintName'] = '';
         $scope['hintExplanation'] = 'Have fun!';
+        $scope['methodDescription'] = '';
+        $scope['methodDescriptionVisible'] = false;
         $scope['inputDisabled'] = false;
         $scope['focusedCell'] = null;
         $scope['keyboardControls'] = true;
@@ -83,6 +86,7 @@ angular.module(PAGE_NAME, [])
          */
         $scope['handleKeyDown'] = function(event) {
             event.preventDefault();
+            $scope['clearHighlight']();
             var currentMarking = $scope['focusedCell']['marking'];
             switch (event.keyCode) {
                 case 87:  // W
@@ -137,8 +141,8 @@ angular.module(PAGE_NAME, [])
                 applySingleHint();
             } else {
                 $scope['inputDisabled'] = true;
-                callApi('/get_hints', {'board_str': dataService.board},
-                    function (result) {
+                getHintsFromApi(
+                    function(result) {
                         if (!result.length) {
                             markPuzzleComplete();
                             return;
@@ -146,7 +150,7 @@ angular.module(PAGE_NAME, [])
                         hintQueue_ = result;
                         applySingleHint();
                         $scope['inputDisabled'] = false;
-                    }, function (error) {
+                    }, function(error) {
                         displayFailure();
                         $scope['inputDisabled'] = false;
                     }
@@ -165,15 +169,15 @@ angular.module(PAGE_NAME, [])
                 applyHintSeries();
             } else {
                 $scope['inputDisabled'] = true;
-                callApi('/get_hints', {'board_str': dataService.board},
-                    function (result) {
+                getHintsFromApi(
+                    function(result) {
                         if (!result.length) {
                             $scope['inputDisabled'] = false;
                         } else {
                             hintQueue_ = result;
                             applyHintSeries();
                         }
-                    }, function (error) {
+                    }, function(error) {
                         displayFailure();
                     }
                 );
@@ -202,6 +206,14 @@ angular.module(PAGE_NAME, [])
             if (!document.activeElement.classList.contains('puzzle-cell')) {
                 $scope['focusedCell'] = null;
             }
+        };
+
+        /**
+         * Show or hide the hovering method description.
+         * @param {boolean} show
+         */
+        $scope['showMethodDescription'] = function(show) {
+            $scope['methodDescriptionVisible'] = show;
         };
 
         /**
@@ -242,7 +254,9 @@ angular.module(PAGE_NAME, [])
                 }
                 cell.highlighted = true;
                 highlightedCell_ = cell;
+                $scope['hintName'] = nextHint['name'];
                 $scope['hintExplanation'] = nextHint['description'];
+                addMethodDescription();
                 return true;
             } else {
                 return false;
@@ -269,8 +283,7 @@ angular.module(PAGE_NAME, [])
             if (applySingleHint()) {
                 if (!hintQueue_.length) {
                     // Attempt to load more
-                    $scope['hintExplanation'] = 'Thinking...';
-                    callApi('/get_hints', {'board_str': dataService.board},
+                    getHintsFromApi(
                         function (result) {
                             if (result.length) {
                                 hintQueue_ = result;
@@ -291,6 +304,12 @@ angular.module(PAGE_NAME, [])
         }
 
         /**
+         * Add the correct method description to the overlay bubble.
+         */
+        function addMethodDescription() {
+        }
+
+        /**
          * Mark the puzzle as completed.
          */
         function markPuzzleComplete() {
@@ -304,6 +323,15 @@ angular.module(PAGE_NAME, [])
          */
         function displayFailure() {
             $scope['hintExplanation'] = "I couldn't think of anything.";
+        }
+
+        /**
+         * Call the get_hints endpoint.
+         */
+        function getHintsFromApi(callback, errback) {
+            $scope['hintName'] = '';
+            $scope['hintExplanation'] = 'Thinking...';
+            callApi('/get_hints', {'board_str': dataService.board}, callback, errback);
         }
 
         /**
