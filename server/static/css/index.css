@@ -56,14 +56,29 @@ body {
     width: 1.5rem;
     height: 1.5rem;
     border: 1px solid #666;
+    padding: 0;
 }
 
 .black-cell {
     background: #000;
 }
 
-.white-cell {
-    background: #CCC;
+.white-cell:before, .white-cell:after {
+    position: absolute;
+    content: '';
+    border-bottom: 1px solid #888;
+    width: 2.12rem;
+    z-index: -1;
+    margin: 0;
+    margin-left: -0.3rem;
+}
+
+.white-cell:before {
+    transform: rotate(-45deg);
+}
+
+.white-cell:after {
+    transform: rotate(45deg);
 }
 
 .highlighted-cell {
