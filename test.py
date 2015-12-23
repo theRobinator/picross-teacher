@@ -19,7 +19,7 @@ if len(argv) > 1:
         argv[1] += '.txt'
     board = loader.puzzle_from_hint_file(path.join('testpuzzles', argv[1]))
 else:
-    board = loader.puzzle_from_hint_file(path.join('testpuzzles', '6x7_cat.txt'))
+    board = loader.puzzle_from_hint_file(path.join('testpuzzles', '15x15_puppy.txt'))
 
 solver = MultiSolver([
     FinalSpaces(),

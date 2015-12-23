@@ -18,7 +18,7 @@ SERVER_ROOT = 'server'
 
 class PicrossServer(object):
     
-    def __init__(self, puzzle_name='6x7_cat.txt'):
+    def __init__(self, puzzle_name='15x15_puppy.txt'):
         self.puzzle_name = puzzle_name
         self.solver = MultiSolver([
             FinalSpaces(),
