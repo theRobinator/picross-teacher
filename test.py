@@ -1,5 +1,5 @@
-#import pyximportcpp; pyximportcpp.install(inplace=True)
-import pyximport; pyximport.install(inplace=True)
+import pyximportcpp; pyximportcpp.install(inplace=True)
+#import pyximport; pyximport.install(inplace=True)
 
 from os import path
 from sys import argv

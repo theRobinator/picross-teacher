@@ -3,7 +3,7 @@
 from picross.models.board cimport Board
 
 from picross.models import cellmarking
-from picross.models.move import Move
+from picross.models.move cimport Move
 
 
 cdef class FinalSpaces(object):

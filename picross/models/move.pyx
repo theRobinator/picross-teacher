@@ -1,7 +1,9 @@
+cimport Move
 import cellmarking
 
 
-class Move(object):
+cdef class Move(object):
+    
     def __init__(self, x, y, mark, name, description):
         self.x = x
         self.y = y
@@ -22,14 +24,17 @@ class Move(object):
             return '[%s] Unknown at (%d, %d)' % (self.name, self.x, self.y)
 
     @staticmethod
-    def remove_dupes(moves):
-        marked_positions = set()
-        i = 0
-        while i < len(moves):
+    def remove_dupes(list moves):
+        cdef set marked_positions = set()
+        cdef int i = 0
+        cdef Move move
+        move_count = len(moves)
+        while i < move_count:
             move = moves[i]
             move_position = (move.x, move.y)
             if move_position in marked_positions:
                 del moves[i]
+                move_count -= 1
             else:
                 marked_positions.add(move_position)
                 i += 1

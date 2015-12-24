@@ -2,7 +2,7 @@
 from picross.models.board cimport Board
 
 from picross.models.cellmarking cimport *
-from picross.models.move import Move
+from picross.models.move cimport Move
 from picross cimport utils
 from picross import utils
 

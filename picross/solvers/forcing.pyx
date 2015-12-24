@@ -1,9 +1,9 @@
 from picross.models.board cimport Board
 from picross.models.cellmarking cimport cell_marking
 from picross.models.markedblock cimport MarkedBlock
+from picross.models.move cimport Move
 
 from picross.models import cellmarking
-from picross.models.move import Move
 
 
 cdef class Forcing(object):
