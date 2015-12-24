@@ -20,7 +20,8 @@ cdef class SimpleBoxes(object):
         cdef int board_height = board.get_height()
         cdef int i, row_index, column_index
         cdef MarkedBlock block
-        cdef list moves = [], hints, current_row, current_array, left_stacked, right_stacked, left_array, right_array
+        cdef list moves = [], hints, current_row, left_stacked, right_stacked
+        cdef int[:] current_array, left_array, right_array
         
         for row_index in xrange(board_height):
             if board.is_row_complete(row_index):
@@ -81,7 +82,7 @@ cdef class SimpleBoxes(object):
             
         return moves
 
-    cdef list _punctuate(self, list hints, list current_array, list left_array, list right_array, bint is_rows, int board_index):
+    cdef list _punctuate(self, list hints, int[:] current_array, int[:] left_array, int[:] right_array, bint is_rows, int board_index):
         # Punctuate fully-discovered blocks with spaces
         cdef list moves = []
         cdef int current_hint = 0, match_count = 0, matches_needed = 0, i, x1, x2, y1, y2
@@ -138,7 +139,7 @@ cdef class SimpleBoxes(object):
         
         return moves
     
-    cdef list _find_spaces(self, list current_array, list left_array, list right_array, bint is_rows, int board_index):
+    cdef list _find_spaces(self, int[:] current_array, int[:] left_array, int[:] right_array, bint is_rows, int board_index):
         cdef list moves = []
         cdef str label
         cdef int left_marking, right_marking, x, y, i

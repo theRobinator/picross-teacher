@@ -1,8 +1,11 @@
+from cpython cimport array
+import array
+
 from picross.models.cellmarking cimport *
 from picross.models.markedblock cimport MarkedBlock
 
 
-cdef list stack_left(list hints, list current_marks):
+cdef list stack_left(list hints, int[:] current_marks):
     cdef int board_length = len(current_marks), total_length
     cdef list stacked
 
@@ -24,7 +27,7 @@ cdef list stack_left(list hints, list current_marks):
     return stacked
 
 
-cdef list stack_right(list hints, list current_marks):
+cdef list stack_right(list hints, int[:] current_marks):
     cdef int board_length = len(current_marks), total_length
     cdef list stacked
 
@@ -51,7 +54,7 @@ cdef list stack_right(list hints, list current_marks):
     return stacked
 
 
-cdef list brute_force_stack(list stacked, list current_marks, int start_index, int step, bint find_next=False):
+cdef list brute_force_stack(list stacked, int[:] current_marks, int start_index, int step, bint find_next=False):
     cdef int block_index = start_index
     cdef int board_length = len(current_marks), block_count = len(stacked)
     cdef int previous_index, end_index, next_position, i
@@ -98,17 +101,12 @@ cdef list brute_force_stack(list stacked, list current_marks, int start_index, i
     return stacked
 
 
-cdef list blocks_to_array(list block_list, int board_width):
-    cdef list result = []
+cdef int[:] blocks_to_array(list block_list, int board_width):
+    cdef int[:] result = array.array('i', [0] * board_width)
     cdef int position = 0, i
     cdef MarkedBlock block
     
     for block in block_list:
-        if block.position > position:
-            for i in xrange(position, block.position):
-                result.append(0)
-            position = block.position
-            
         if block.marking == BLACK:
             if block.hint_id != -1:
                 marking = block.hint_id
@@ -118,13 +116,11 @@ cdef list blocks_to_array(list block_list, int board_width):
             marking = 0
         else:
             marking = -1
+        position = block.position
         for i in xrange(block.length):
-            result.append(marking)
+            result[position + i] = marking
         position += block.length
     
-    if position < board_width:
-        for i in xrange(board_width - position):
-            result.append(0)
     return result
 
 
@@ -140,7 +136,7 @@ cdef tuple _stack_markedblocks(list hints, int board_length):
     return stacked, total_length
 
 
-cdef bint _conflicts(list marked_blocks, list correct_array):
+cdef bint _conflicts(list marked_blocks, int[:] correct_array):
     cdef int test_position = 0, block_position, i, correct
     cdef cell_marking marking
     cdef MarkedBlock block

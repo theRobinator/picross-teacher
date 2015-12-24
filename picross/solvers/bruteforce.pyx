@@ -11,6 +11,7 @@ cdef class BruteForce(object):
         cdef int board_width = board.get_width()
         cdef int board_height = board.get_height()
         cdef int row_index, column_index
+        cdef int[:] current_array
         cdef list moves = []
         
         for row_index in xrange(board_height):
@@ -41,10 +42,11 @@ cdef class BruteForce(object):
             
         return moves
     
-    cdef list _get_possible_marks(self, list hints, list current_array, int board_size, bint is_rows, int board_index):
+    cdef list _get_possible_marks(self, list hints, int[:] current_array, int board_size, bint is_rows, int board_index):
         cdef list moves = []
         cdef str move_suffix, move_name
-        cdef list stacked, possible_marks, new_array
+        cdef list stacked
+        cdef int[:] possible_marks, new_array
         cdef int marks_remaining, i, x, y, marking
         if is_rows:
             move_suffix = 'row'
