@@ -9,7 +9,8 @@ from picross.models.move import Move
 cdef class FinalSpaces(object):
     
     cpdef list get_next_moves(self, Board board):
-        cdef list moves = [], hints, row, column, possible_moves
+        cdef list moves = [], row, column, possible_moves
+        cdef int[:] hints
         cdef int board_width = board.get_width(), board_height = board.get_height()
         cdef int hint_sum, marked_sum, i
         

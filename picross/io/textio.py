@@ -1,3 +1,4 @@
+import array
 import re
 
 from picross.models.board import Board
@@ -53,7 +54,7 @@ def puzzle_from_hints(hint_string):
                 raise Exception('Only one blank line can be specified in a hint file')
         
         numbers = re.split("\s+", line)
-        current_hints.append([int(i) for i in numbers])
+        current_hints.append(array.array('i', [int(i) for i in numbers]))
     
     width = len(top_hints)
     height = len(side_hints)

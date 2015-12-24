@@ -37,10 +37,10 @@ cdef class Board(object):
     cpdef void set_hints(self, list top_hints, list side_hints)
 
     #: Get the hints for row i.
-    cpdef list get_row_hints(self, int i)
+    cpdef int[:] get_row_hints(self, int i)
 
     #: Get the hints for column i.
-    cpdef list get_column_hints(self, int i)
+    cpdef int[:] get_column_hints(self, int i)
 
     #: Refresh the hints to a correct state. This should be called after modifying the answer.
     cpdef void refresh_hints(self)

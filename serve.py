@@ -1,5 +1,5 @@
 #! /usr/bin/env python2.7
-import pyximportcpp; pyximportcpp.install(inplace=True)
+import pyximport; pyximport.install(inplace=True)
 
 from os import path
 from sys import argv

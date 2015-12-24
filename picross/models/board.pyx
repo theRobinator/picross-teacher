@@ -1,3 +1,6 @@
+from cpython cimport array
+import array
+
 from cell import Cell
 from cellmarking cimport *
 from markedblock import MarkedBlock
@@ -119,11 +122,11 @@ cdef class Board(object):
         self._hints_current = True
 
     #: Get the hints for row i.
-    cpdef list get_row_hints(self, int i):
+    cpdef int[:] get_row_hints(self, int i):
         return self._side_hints[i]
 
     #: Get the hints for column i.
-    cpdef list get_column_hints(self, int i):
+    cpdef int[:] get_column_hints(self, int i):
         return self._top_hints[i]
 
     #: Refresh the hints to a correct state. This should be called after modifying the answer.
@@ -150,7 +153,7 @@ cdef class Board(object):
                         mark_count = 0
             if mark_count > 0:
                 hints.append(mark_count)
-            self._side_hints.append(hints)
+            self._side_hints.append(array.array('i', hints))
 
         # Top hints
         self._top_hints = []
@@ -167,7 +170,7 @@ cdef class Board(object):
                         mark_count = 0
             if mark_count > 0:
                 hints.append(mark_count)
-            self._top_hints.append(hints)
+            self._top_hints.append(array.array('i', hints))
         
         self._hints_current = True
 
@@ -179,7 +182,8 @@ cdef class Board(object):
         cdef int i, missed_checks, max_len, this_len, col_width
         cdef cell_marking mark
         cdef str printed_list, left_buffer, horiz_divider, top_hint_str
-        cdef list row, board_lines = [], top_hints = [], top_print_list, hint_list, side_print_list
+        cdef list row, board_lines = [], top_hints = [], temp_print_list, top_print_list, side_print_list
+        cdef int[:] hint_list
         
         # Make top hints
         top_print_list = []
@@ -202,12 +206,12 @@ cdef class Board(object):
             top_print_list.insert(0, nth_hints)
 
         for hint_list_index in xrange(len(top_print_list)):
-            hint_list = top_print_list[hint_list_index]
-            for i in xrange(len(hint_list)):
-                this_len = len(hint_list[i])
+            temp_print_list = top_print_list[hint_list_index]
+            for i in xrange(len(temp_print_list)):
+                this_len = len(temp_print_list[i])
                 if this_len < col_width:
-                    hint_list[i] = (' ' * (col_width - this_len)) + hint_list[i]
-            top_print_list[hint_list_index] = '|'.join(hint_list)
+                    temp_print_list[i] = (' ' * (col_width - this_len)) + temp_print_list[i]
+            top_print_list[hint_list_index] = '|'.join(temp_print_list)
         
         # Make side hints
         side_print_list = []

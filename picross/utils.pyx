@@ -1,3 +1,5 @@
+# cython: boundscheck=False
+
 from cpython cimport array
 import array
 
@@ -5,7 +7,7 @@ from picross.models.cellmarking cimport *
 from picross.models.markedblock cimport MarkedBlock
 
 
-cdef list stack_left(list hints, int[:] current_marks):
+cdef list stack_left(int[:] hints, int[:] current_marks):
     cdef int board_length = len(current_marks), total_length
     cdef list stacked
 
@@ -27,7 +29,7 @@ cdef list stack_left(list hints, int[:] current_marks):
     return stacked
 
 
-cdef list stack_right(list hints, int[:] current_marks):
+cdef list stack_right(int[:] hints, int[:] current_marks):
     cdef int board_length = len(current_marks), total_length
     cdef list stacked
 
@@ -124,7 +126,7 @@ cdef int[:] blocks_to_array(list block_list, int board_width):
     return result
 
 
-cdef tuple _stack_markedblocks(list hints, int board_length):
+cdef tuple _stack_markedblocks(int[:] hints, int board_length):
     cdef list stacked = []
     cdef int total_length = 0, i, hint, hint_count = len(hints)
     for i in xrange(hint_count):

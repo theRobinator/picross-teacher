@@ -1,3 +1,5 @@
+import array
+
 import json
 
 from picross.models.board import Board
@@ -8,11 +10,11 @@ def board_to_json(board):
     board_height = board.get_height()
     top_hints = []
     for i in xrange(board_width):
-        top_hints.append(board.get_column_hints(i))
+        top_hints.append(list(board.get_column_hints(i)))
         
     side_hints = []
     for i in xrange(board_height):
-        side_hints.append(board.get_row_hints(i))
+        side_hints.append(list(board.get_row_hints(i)))
     
     rows = []
     for i in xrange(board_height):
@@ -52,6 +54,12 @@ def json_to_board(json_str):
         return None
     
     board = Board(board_width, board_height)
+    
+    # Convert all hints to arrays for speed
+    for hint_list in [top_hints, side_hints]:
+        for i in xrange(len(hint_list)):
+            hint_list[i] = array.array('i', hint_list[i])
+            
     board.set_hints(top_hints, side_hints)
     for row_index in xrange(len(rows)):
         row = rows[row_index]
