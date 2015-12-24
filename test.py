@@ -3,7 +3,7 @@ import pyximportcpp; pyximportcpp.install(inplace=True)
 from os import path
 from sys import argv
 
-from picross.io import loader
+from picross.io import textio
 
 from picross.models import cellmarking
 
@@ -17,9 +17,9 @@ from picross.solvers.simpleboxes import SimpleBoxes
 if len(argv) > 1:
     if not argv[1].endswith('.txt'):
         argv[1] += '.txt'
-    board = loader.puzzle_from_hint_file(path.join('testpuzzles', argv[1]))
+    board = textio.puzzle_from_hint_file(path.join('testpuzzles', argv[1]))
 else:
-    board = loader.puzzle_from_hint_file(path.join('testpuzzles', '15x15_puppy.txt'))
+    board = textio.puzzle_from_hint_file(path.join('testpuzzles', '15x15_puppy.txt'))
 
 solver = MultiSolver([
     FinalSpaces(),

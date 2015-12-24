@@ -79,3 +79,20 @@ def puzzle_from_hint_file(filename):
             return puzzle_from_hints(fp.read())
     else:
         raise Exception('Only txt files can be read from')
+
+
+def puzzle_from_file(filename):
+    if filename.endswith('.txt'):
+        with open(filename, 'r') as fp:
+            contents = fp.read()
+            if not len(contents):
+                raise Exception('Cannot read a puzzle from an empty file')
+            first_line = contents.split("\n", 1)[0]
+            if re.match('^[\d\s]+$', first_line):
+                return puzzle_from_hints(contents)
+            else:
+                return puzzle_from_string(contents)
+                
+    else:
+        raise Exception('Only txt files can be read from')
+    

@@ -34,15 +34,17 @@ to compile. After you do that, you can either run
 
 ```python test.py [puzzle_file_name]```
 
-to solve a puzzle from the test puzzles folder, or
+to solve a puzzle from the test puzzles folder using the command line, or
 
-```python serve.py [puzzle_file_name]```
+```python serve.py [puzzle_file_or_image]```
 
 to start up the local webserver with the web interface at http://localhost:8080.
+If you pass an image file to serve.py, a puzzle will be created from your image.
+Two- or three-color images work the best for this.
 
 
 ## Roadmap
 
-* Make your own puzzles from images
 * Use native arrays instead of lists for speed
+* Add colors to puzzles created from images
 * Create pre-compiled distros
