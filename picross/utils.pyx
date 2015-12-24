@@ -1,4 +1,4 @@
-# cython: boundscheck=False
+# cython: boundscheck=False, nonecheck=False, wraparound=False, initializedcheck=False
 
 from cpython cimport array
 import array
@@ -17,7 +17,7 @@ cdef list stack_left(int[:] hints, int[:] current_marks):
     if total_length == board_length:
         return stacked
 
-    # We can use a faster algorithm if no blocks are already painted in the row
+    # Update positions for the left stack
     cdef bint empty_row = True
     for i in xrange(board_length):
         if current_marks[i] > 0:

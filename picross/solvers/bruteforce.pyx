@@ -1,6 +1,7 @@
+#cython: boundscheck=False, nonecheck=False, wraparound=False, initializedcheck=False
 from picross.models.board cimport Board
 
-from picross.models import cellmarking
+from picross.models.cellmarking cimport *
 from picross.models.move import Move
 from picross cimport utils
 from picross import utils
@@ -48,10 +49,16 @@ cdef class BruteForce(object):
         cdef list stacked
         cdef int[:] possible_marks, new_array
         cdef int marks_remaining, i, x, y, marking
+        
         if is_rows:
             move_suffix = 'row'
         else:
             move_suffix = 'column'
+        cdef str spaces_name = 'Inner Spaces'
+        cdef str spaces_label = 'The blocks in this %s cannot reach to this cell, so it must be empty.' % move_suffix
+        cdef str boxes_name = 'Forced Boxes'
+        cdef str boxes_label = 'This cell is filled no matter how this %s is filled in.' % move_suffix
+        
         stacked = utils.stack_left(hints, current_array)
         possible_marks = utils.blocks_to_array(stacked, board_size)
         marks_remaining = 0
@@ -77,13 +84,13 @@ cdef class BruteForce(object):
             marking = possible_marks[i]
             if marking != -1 and current_array[i] == -1:
                 if marking == 0:
-                    cell_marking = cellmarking.WHITE
-                    move_name = 'Inner Spaces'
-                    label = 'The blocks in this %s cannot reach to this cell, so it must be empty.' % move_suffix
+                    cell_marking = WHITE
+                    move_name = spaces_name
+                    label = spaces_label
                 else:
-                    cell_marking = cellmarking.BLACK
-                    move_name = 'Forced Boxes'
-                    label = 'This cell is filled no matter how this %s is filled in.' % move_suffix
+                    cell_marking = BLACK
+                    move_name = boxes_name
+                    label = boxes_label
                 if is_rows:
                     x = i
                     y = board_index
