@@ -4,7 +4,7 @@ from picross.models.board cimport Board
 from picross.models.cellmarking cimport *
 from picross.models.move cimport Move
 from picross cimport utils
-from picross import utils
+
 
 cdef class BruteForce(object):
     
@@ -20,9 +20,7 @@ cdef class BruteForce(object):
                 continue
             
             hints = board.get_row_hints(row_index)
-            current_marks = []
-            for block in board.iterrow(row_index):
-                current_marks.append(block)
+            current_marks = board.get_row_blocks(row_index)
             current_array = utils.blocks_to_array(current_marks, board_width)
             
             moves.extend(self._get_possible_marks(hints, current_array, board_width, True, row_index))
@@ -32,9 +30,7 @@ cdef class BruteForce(object):
                 continue
             
             hints = board.get_column_hints(column_index)
-            current_marks = []
-            for block in board.itercolumn(column_index):
-                current_marks.append(block)
+            current_marks = board.get_column_blocks(column_index)
             current_array = utils.blocks_to_array(current_marks, board_height)
             
             moves.extend(self._get_possible_marks(hints, current_array, board_height, False, column_index))
@@ -67,8 +63,9 @@ cdef class BruteForce(object):
                 marks_remaining += 1
         
         cdef bint looping = True
+        cdef int stack_end_index = len(stacked) - 1
         while looping:
-            stacked = utils.brute_force_stack(stacked, current_array, len(stacked) - 1, 1, True)
+            stacked = utils.brute_force_stack(stacked, current_array, stack_end_index, 1, True)
             if stacked is None:
                 break
             new_array = utils.blocks_to_array(stacked, board_size)

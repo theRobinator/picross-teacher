@@ -22,6 +22,12 @@ cdef class Board(object):
     #: Get a list containing the markings of a single column.
     cpdef list get_column(self, int column)
     
+    #: Get the MarkedBlocks for a given row.
+    cdef list get_row_blocks(self, int row)
+    
+    #: Get the MarkedBlocks for a given column.
+    cdef list get_column_blocks(self, int column)
+    
     #: Get the current mark of the given cell.
     cpdef cell_marking get_mark(self, int x, int y)
 

@@ -34,43 +34,49 @@ cdef class Board(object):
     cpdef int get_height(self):
         return self._height
 
-    #: Iterate through a row using MarkedBlocks
-    def iterrow(self, row):
+    #: Get the MarkedBlocks for a given row.
+    cdef list get_row_blocks(self, int row):
         cdef cell_marking last_marking = self._cells[0][row].get_marking()
         cdef int length = 0
+        cdef list result = []
         block = MarkedBlock(last_marking, position=0)
 
         for i in xrange(self._width):
             cell = self._cells[i][row]
 
             if cell.get_marking() != last_marking:
-                yield block
+                result.append(block)
                 last_marking = cell.get_marking()
                 block = MarkedBlock(last_marking, position=i)
 
             block.length += 1
 
         if block is not None:
-            yield block
+            result.append(block)
 
-    #: Iterate through a row using MarkedBlocks
-    def itercolumn(self, column):
+        return result
+
+    #: Get the MarkedBlocks for a given column.
+    cdef list get_column_blocks(self, int column):
         cdef cell_marking last_marking = self._cells[column][0].get_marking()
         cdef int length = 0
+        cdef list result = []
         block = MarkedBlock(last_marking, position=0)
 
         for i in xrange(self._height):
             cell = self._cells[column][i]
 
             if cell.get_marking() != last_marking:
-                yield block
+                result.append(block)
                 last_marking = cell.get_marking()
                 block = MarkedBlock(last_marking, position=i)
 
             block.length += 1
 
         if block is not None:
-            yield block
+            result.append(block)
+        
+        return result
     
     #: Get a list containing the markings of a single row.
     cpdef list get_row(self, int row):

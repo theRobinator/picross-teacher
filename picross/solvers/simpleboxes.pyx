@@ -27,9 +27,7 @@ cdef class SimpleBoxes(object):
                 continue
             hints = board.get_row_hints(row_index)
             # Get the row with currently filled-in cells
-            current_row = []
-            for block in board.iterrow(row_index):
-                current_row.append(block)
+            current_row = board.get_row_blocks(row_index)
             current_array = utils.blocks_to_array(current_row, board_width)
 
             # Create left- and right-stacked versions of all the hints
@@ -55,9 +53,7 @@ cdef class SimpleBoxes(object):
                 
             hints = board.get_column_hints(column_index)
             # Get the column with currently filled-in cells
-            current_row = []
-            for block in board.itercolumn(column_index):
-                current_row.append(block)
+            current_row = board.get_column_blocks(column_index)
             current_array = utils.blocks_to_array(current_row, board_height)
 
             # Create left- and right-stacked versions of all the hints

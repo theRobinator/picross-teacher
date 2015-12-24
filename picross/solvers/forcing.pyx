@@ -18,18 +18,14 @@ cdef class Forcing(object):
             if board.is_row_complete(row_index):
                 continue
             hints_remaining = board.get_row_hints(row_index)
-            blocks = []
-            for block in board.iterrow(row_index):
-                blocks.append(block)
+            blocks = board.get_row_blocks(row_index)
             moves.extend(self._force_cells(hints_remaining, blocks, True, row_index))
         
         for column_index in xrange(board_width):
             if board.is_column_complete(column_index):
                 continue
             hints_remaining = board.get_column_hints(column_index)
-            blocks = []
-            for block in board.itercolumn(column_index):
-                blocks.append(block)
+            blocks = board.get_column_blocks(column_index)
             moves.extend(self._force_cells(hints_remaining, blocks, False, column_index))
             
         Move.remove_dupes(moves)
