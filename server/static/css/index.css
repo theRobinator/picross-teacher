@@ -63,6 +63,10 @@ body {
     background: #000;
 }
 
+.black-cell.highlighted-cell {
+    background: #0C0;
+}
+
 .white-cell:before, .white-cell:after {
     position: absolute;
     content: '';
@@ -81,16 +85,19 @@ body {
     transform: rotate(45deg);
 }
 
+.highlighted-cell.white-cell:before, .highlighted-cell.white-cell:after {
+    border-bottom-color: #0C0;
+}
+
 .highlighted-cell {
-    background: #0F0;
     -webkit-box-shadow: 1px 1px 5px 5px #0C0;
     -moz-box-shadow: 1px 1px 5px 5px #0C0;
     box-shadow: 1px 1px 5px 4px #0C0;
 }
 
 .focused-cell {
-    -webkit-box-shadow: inset 0px 0px 5px 5px #0C0;
-    -moz-box-shadow: inset 0px 0px 1px 1px #0C0;
+    -webkit-box-shadow: inset 0px 0px 1px 1px #0FF;
+    -moz-box-shadow: inset 0px 0px 1px 1px #0FF;
     box-shadow: inset 0px 0px 1px 1px #0FF;
 }
 
