@@ -1,13 +1,10 @@
-#cython: wraparound=False
+#cython: boundscheck=False, nonecheck=False, wraparound=False, initializedcheck=False
 
 from picross cimport utils
 from picross.models.board cimport Board
-from picross.models.cellmarking cimport cell_marking
+from picross.models.cellmarking cimport *
 from picross.models.markedblock cimport MarkedBlock
 from picross.models.move cimport Move
-
-from picross.models import cellmarking
-from picross import utils
 
 
 cdef class SimpleBoxes(object):
@@ -42,7 +39,7 @@ cdef class SimpleBoxes(object):
             # Find places where the two stackings fit together
             for i in xrange(len(left_array)):
                 if left_array[i] == right_array[i] and left_array[i] > 0 and current_array[i] == -1:
-                    moves.append(Move(i, row_index, cellmarking.BLACK, 'Simple Boxes', 'This cell is marked regardless of the position of hints in this row.'))
+                    moves.append(Move(i, row_index, BLACK, 'Simple Boxes', 'This cell is marked regardless of the position of hints in this row.'))
             
             moves.extend(self._punctuate(hints, current_array, left_array, right_array, True, row_index))
             moves.extend(self._find_spaces(current_array, left_array, right_array, True, row_index))
@@ -68,7 +65,7 @@ cdef class SimpleBoxes(object):
             # Find places where the two stackings fit together
             for i in xrange(len(left_array)):
                 if left_array[i] == right_array[i] and left_array[i] > 0 and current_array[i] == -1:
-                    moves.append(Move(column_index, i, cellmarking.BLACK, 'Simple Boxes', 'This cell is marked regardless of the position of hints in this column.'))
+                    moves.append(Move(column_index, i, BLACK, 'Simple Boxes', 'This cell is marked regardless of the position of hints in this column.'))
             
             moves.extend(self._punctuate(hints, current_array, left_array, right_array, False, column_index))
             moves.extend(self._find_spaces(current_array, left_array, right_array, False, column_index))
@@ -80,19 +77,19 @@ cdef class SimpleBoxes(object):
     cdef list _punctuate(self, int[:] hints, int[:] current_array, int[:] left_array, int[:] right_array, bint is_rows, int board_index):
         # Punctuate fully-discovered blocks with spaces
         cdef list moves = []
-        cdef int current_hint = 0, match_count = 0, matches_needed = 0, i, x1, x2, y1, y2
+        cdef int current_hint = 0, match_count = 0, matches_needed = 0, marking, i, x1, x2, y1, y2
         
-        cdef str move_label
+        cdef str move_description
         if is_rows:
-            move_label = 'row'
+            move_description = 'The block of %d in this row is complete, so it can be surrounded by spaces.'
         else:
-            move_label = 'column'
+            move_description = 'The block of %d in this column is complete, so it can be surrounded by spaces.'
             
         for i in xrange(len(left_array)):
             marking = left_array[i]
             if marking == 0:
                 if match_count == matches_needed and match_count > 0:
-                    reason = 'The block of %d in this %s is complete, so it can be surrounded by spaces.' % (match_count, move_label)
+                    reason = move_description % match_count
                     previous_index = i - match_count - 1
                     if is_rows:
                         x1 = previous_index
@@ -103,9 +100,9 @@ cdef class SimpleBoxes(object):
                         y1 = previous_index
                         y2 = i
                     if previous_index >= 0 and current_array[previous_index] == -1:
-                        moves.append(Move(x1, y1, cellmarking.WHITE, 'Punctuation', reason))
+                        moves.append(Move(x1, y1, WHITE, 'Punctuation', reason))
                     if current_array[i] == -1:
-                        moves.append(Move(x2, y2, cellmarking.WHITE, 'Punctuation', reason))
+                        moves.append(Move(x2, y2, WHITE, 'Punctuation', reason))
                 current_hint = 0
                 match_count = 0
                 
@@ -121,7 +118,7 @@ cdef class SimpleBoxes(object):
                 match_count = 0
         
         if match_count == matches_needed and match_count > 0:
-            reason = 'The block of %d in this %s is complete, so it can be surrounded by spaces.' % (match_count, move_label)
+            reason = move_description % match_count
             previous_index = i - match_count
             if is_rows:
                 x1 = previous_index
@@ -130,13 +127,14 @@ cdef class SimpleBoxes(object):
                 x1 = board_index
                 y1 = previous_index
             if previous_index >= 0 and current_array[previous_index] == -1:
-                moves.append(Move(x1, y1, cellmarking.WHITE, 'Punctuation', reason))
+                moves.append(Move(x1, y1, WHITE, 'Punctuation', reason))
         
         return moves
     
     cdef list _find_spaces(self, int[:] current_array, int[:] left_array, int[:] right_array, bint is_rows, int board_index):
         cdef list moves = []
         cdef str label
+        cdef int row_length = len(left_array)
         cdef int left_marking, right_marking, x, y, i
     
         if is_rows:
@@ -145,7 +143,7 @@ cdef class SimpleBoxes(object):
             label = 'This cell is empty regardless of the position of hints in this column.'
             
         # Any shared spaces outside both stackings can be filled in
-        for i in xrange(len(left_array)):
+        for i in xrange(row_length):
             left_marking = left_array[i]
             right_marking = right_array[i]
             if left_marking > 0 or right_marking > 0:
@@ -157,9 +155,9 @@ cdef class SimpleBoxes(object):
                 else:
                     x = board_index
                     y = i
-                moves.append(Move(x, y, cellmarking.WHITE, 'Simple Spaces', label))
+                moves.append(Move(x, y, WHITE, 'Simple Spaces', label))
 
-        for i in xrange(len(left_array) - 1, -1, -1):
+        for i in xrange(row_length - 1, -1, -1):
             left_marking = left_array[i]
             right_marking = right_array[i]
             if left_marking > 0 or right_marking > 0:
@@ -171,6 +169,6 @@ cdef class SimpleBoxes(object):
                 else:
                     x = board_index
                     y = i
-                moves.append(Move(x, y, cellmarking.WHITE, 'Simple Spaces', label))
+                moves.append(Move(x, y, WHITE, 'Simple Spaces', label))
 
         return moves
