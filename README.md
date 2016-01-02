@@ -45,6 +45,5 @@ Two- or three-color images work the best for this.
 
 ## Roadmap
 
-* Use native arrays instead of lists for speed
-* Add colors to puzzles created from images
 * Create pre-compiled distros
+* Get more puzzles by default
