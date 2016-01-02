@@ -8,6 +8,7 @@ from picross.models.board import Board
 def board_to_json(board):
     board_width = board.get_width()
     board_height = board.get_height()
+    
     top_hints = []
     for i in xrange(board_width):
         top_hints.append(list(board.get_column_hints(i)))

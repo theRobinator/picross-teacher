@@ -49,7 +49,7 @@ cdef class Board(object):
     cpdef int[:] get_column_hints(self, int i)
 
     #: Refresh the hints to a correct state. This should be called after modifying the answer.
-    cpdef void refresh_hints(self)
+    cpdef void refresh_hints(self) except *
 
     cpdef str get_display_string(self, bint answer=?)
     

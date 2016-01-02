@@ -17,6 +17,7 @@ angular.module(PAGE_NAME, [])
         var highlightedCell_ = null;
         var lastMarking_ = null;
         var focusX_, focusY_;
+        
         $scope['board'] = dataService.board;
         $scope['rowLength'] = dataService.board.rows[0].length;
         $scope['hintName'] = '';
@@ -26,6 +27,15 @@ angular.module(PAGE_NAME, [])
         $scope['inputDisabled'] = false;
         $scope['focusedCell'] = null;
         $scope['keyboardControls'] = true;
+        
+        // Render the background image after the board has rendered
+        if (dataService.backgroundImage) {
+            var puzzle = document.getElementsByClassName('full-puzzle')[0];
+            puzzle.classList.add('image-puzzle');
+            puzzle.style.backgroundImage = "url('" + dataService.backgroundImage + "')";
+            window.addEventListener('resize', resizeBackgroundImage);
+            resizeBackgroundImage();
+        }
 
         /**
          * Handle a mouse click on a cell.
@@ -229,8 +239,15 @@ angular.module(PAGE_NAME, [])
          * Change the focus to the given cell.
          */
         function focusCell(x, y) {
-            if (x < 0 || y < 0 || y >= dataService.board.rows.length || x >= dataService.board.rows[y].length) {
-                return;
+            if (x < 0) {
+                x = $scope['rowLength'] - 1;
+            } else if (x >= $scope['rowLength']) {
+                x = 0;
+            }
+            if (y < 0) {
+                y = dataService.board.rows.length - 1;
+            } else if (y >= dataService.board.rows.length) {
+                y = 0;
             }
             focusX_ = x;
             focusY_ = y;
@@ -256,7 +273,6 @@ angular.module(PAGE_NAME, [])
                 highlightedCell_ = cell;
                 $scope['hintName'] = nextHint['name'];
                 $scope['hintExplanation'] = nextHint['description'];
-                addMethodDescription();
                 return true;
             } else {
                 return false;
@@ -301,12 +317,6 @@ angular.module(PAGE_NAME, [])
             } else {
                 $scope['inputDisabled'] = false;
             }
-        }
-
-        /**
-         * Add the correct method description to the overlay bubble.
-         */
-        function addMethodDescription() {
         }
 
         /**
@@ -376,11 +386,27 @@ angular.module(PAGE_NAME, [])
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.send(postData.join('&'));
         }
+
+        /**
+         * Resize the background image in the table so that it fits when the user changes the window size/zoom
+         */
+        function resizeBackgroundImage() {
+            $timeout(function() {
+                var puzzle = document.getElementsByClassName('full-puzzle')[0];
+                var topLeft = document.getElementsByClassName('puzzle-image')[0];
+                var puzzleSize = puzzle.getBoundingClientRect();
+                var topLeftSize = topLeft.getBoundingClientRect();
+                var width = puzzleSize.width - topLeftSize.width;
+                var height = puzzleSize.height - topLeftSize.height;
+                puzzle.style.backgroundSize = width + 'px ' + height + 'px';
+            }, 150);
+        }
     }]);
 
-picross.initialize = function(boardJson) {
+picross.initialize = function(boardJson, backgroundImage) {
     angular.module(PAGE_NAME).run(['dataService', function(dataService) {
         dataService.board = boardJson;
+        dataService.backgroundImage = backgroundImage;
     }]);
     angular.bootstrap(document.body, [PAGE_NAME])
 };

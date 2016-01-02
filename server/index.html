@@ -35,6 +35,11 @@
                         <label for="key-controls-no">Mouse: Click & drag</label>
                     </p>
                 </div>
+                
+                <p class="control-section-title">Other puzzles</p>
+                <ul>
+                    %(availablePuzzles)s
+                </ul>
             </div>
             
             <table class="full-puzzle">
@@ -66,7 +71,7 @@
             </table>
         </div>
         <script type="text/javascript">
-            picross.initialize(%(boardJson)s);
+            picross.initialize(%(boardJson)s, %(imageFile)s);
         </script>
     </body>
 </html>

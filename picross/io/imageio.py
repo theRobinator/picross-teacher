@@ -11,6 +11,9 @@ def board_from_image(image, width, height):
     :param image: 
     :return: 
     """
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+
     # Crop image to the same ratio as width x height
     image_width, image_height = image.size
     desired_ratio = float(width) / height

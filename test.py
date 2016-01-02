@@ -4,7 +4,7 @@ import pyximportcpp; pyximportcpp.install(inplace=True)
 from os import path
 from sys import argv
 
-from picross.io import textio
+from picross.io import load_board
 
 from picross.models import cellmarking
 
@@ -15,12 +15,14 @@ from picross.solvers.multisolver import MultiSolver
 from picross.solvers.simpleboxes import SimpleBoxes
 
 
+PUZZLE_DIR = 'puzzles'
+
 if len(argv) > 1:
-    if not argv[1].endswith('.txt'):
+    if '.' not in argv[1]:
         argv[1] += '.txt'
-    board = textio.puzzle_from_hint_file(path.join('testpuzzles', argv[1]))
+    board = load_board(path.join(PUZZLE_DIR, argv[1]), 15, 20)
 else:
-    board = textio.puzzle_from_hint_file(path.join('testpuzzles', '15x15_puppy.txt'))
+    board = load_board(path.join(PUZZLE_DIR, '15x15_puppy.txt'))
 
 solver = MultiSolver([
     FinalSpaces(),

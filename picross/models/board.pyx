@@ -136,21 +136,21 @@ cdef class Board(object):
         return self._top_hints[i]
 
     #: Refresh the hints to a correct state. This should be called after modifying the answer.
-    cpdef void refresh_hints(self):
+    cpdef void refresh_hints(self) except *:
         if self._hints_current:
             return
         
-        cdef int row, column, mark_count
+        cdef int x, y, mark_count
         cdef list hints, col_list
         cdef cell_marking answer
 
         # Side hints
         self._side_hints = []
-        for column in xrange(self._width):
+        for y in xrange(self._height):
             hints = []
             mark_count = 0
-            for row in xrange(self._height):
-                answer = self._cells[row][column].get_answer()
+            for x in xrange(self._width):
+                answer = self._cells[x][y].get_answer()
                 if answer == BLACK:
                     mark_count += 1
                 elif answer == WHITE:
@@ -163,11 +163,11 @@ cdef class Board(object):
 
         # Top hints
         self._top_hints = []
-        for col_list in self._cells:
+        for x in xrange(self._width):
             hints = []
             mark_count = 0
-            for cell in col_list:
-                answer = cell.get_answer()
+            for y in xrange(self._height):
+                answer = self._cells[x][y].get_answer()
                 if answer == BLACK:
                     mark_count += 1
                 elif answer == WHITE:
