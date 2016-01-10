@@ -1,5 +1,5 @@
 #! /usr/bin/env python2.7
-import pyximportcpp; pyximportcpp.install(inplace=True)
+#import pyximportcpp; pyximportcpp.install(inplace=True)
 
 import json
 import re

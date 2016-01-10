@@ -1,4 +1,4 @@
-import pyximportcpp; pyximportcpp.install(inplace=True)
+#import pyximportcpp; pyximportcpp.install(inplace=True)
 #import pyximport; pyximport.install(inplace=True)
 
 from os import path
@@ -35,7 +35,7 @@ while True:
     moves = solver.get_next_moves(board)
     if len(moves) == 0:
         break
-        
+
     last_name = moves[0].name
     for move in moves:
         if move.name != last_name:

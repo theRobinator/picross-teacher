@@ -30,17 +30,55 @@ need a C compiler installed in order to build it. Once you have that, run
 
 ```python setup.py compile --inplace```
 
-to compile. After you do that, you can either run
+to compile. After you do that, you can run
 
-```python test.py [puzzle_file_name]```
+```python serve.py [puzzle_file_name]```
 
-to solve a puzzle from the test puzzles folder using the command line, or
+to launch the web interface at http://localhost:8080.
 
-```python serve.py [puzzle_file_or_image]```
 
-to start up the local webserver with the web interface at http://localhost:8080.
-If you pass an image file to serve.py, a puzzle will be created from your image.
-Two- or three-color images work the best for this.
+## Making your own puzzles
+
+You can add your own puzzles to the web interface by creating new files in the
+`puzzles` directory. These files' names follow a pattern of `<WIDTH>x<HEIGHT>_<PUZZLE_NAME>`.
+There are three different file types that are supported:
+
+### Hints only
+
+A hints-only file contains the hints for the top of the puzzle, one line per column,
+then a blank line, then the hints for the left side of the puzzle. For example,
+
+```
+1 3
+5
+
+1
+1
+1
+```
+
+Creates a 3x2 puzzle with "1 3" and "5" as the hints on the top, and "1" for each row.
+
+### Puzzle ASCII art
+
+An art file contains an actual drawing of the puzzle, using spaces for spaces and any
+non-space character for filled blocks. For example,
+
+```
+#####
+# # #
+#####
+# # #
+#####
+```
+Creates a 5x5 puzzle and fills the hints in for you.
+
+### Image file
+
+Placing a JPG, PNG, or GIF file in the `puzzles` directory will generate a puzzle from
+the contents of the image. Filled blocks and spaces are chosen based on lighter or
+darker colors. When creating a puzzle from an image, it's best to use one with only
+2 or 3 colors.
 
 
 ## Roadmap

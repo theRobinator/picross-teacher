@@ -16,32 +16,35 @@ def board_from_image(image, width, height):
 
     # Crop image to the same ratio as width x height
     image_width, image_height = image.size
-    desired_ratio = float(width) / height
-    image_ratio = float(image_width) / image_height
-    if desired_ratio == image_ratio:
-        cropped_image = image
+    if image_width == width and image_height == height:
+        sized_image = image
     else:
-        if desired_ratio > image_ratio:
-            # Decrease height to increase ratio
-            new_width = image_width
-            new_height = image_width / desired_ratio
+        desired_ratio = float(width) / height
+        image_ratio = float(image_width) / image_height
+        if desired_ratio == image_ratio:
+            cropped_image = image
         else:
-            # Decrease width to decrease ratio
-            new_width = image_height * desired_ratio
-            new_height = image_height
-        
-        x_crop_distance = int((image_width - new_width) / 2)
-        y_crop_distance = int((image_height - new_height) / 2)
-        crop_rect = (
-            x_crop_distance,  # Left
-            y_crop_distance,  # Top
-            image_width - x_crop_distance,  # Right
-            image_height - y_crop_distance  # Bottom
-        )
-        cropped_image = image.crop(crop_rect)
+            if desired_ratio > image_ratio:
+                # Decrease height to increase ratio
+                new_width = image_width
+                new_height = image_width / desired_ratio
+            else:
+                # Decrease width to decrease ratio
+                new_width = image_height * desired_ratio
+                new_height = image_height
+            
+            x_crop_distance = int((image_width - new_width) / 2)
+            y_crop_distance = int((image_height - new_height) / 2)
+            crop_rect = (
+                x_crop_distance,  # Left
+                y_crop_distance,  # Top
+                image_width - x_crop_distance,  # Right
+                image_height - y_crop_distance  # Bottom
+            )
+            cropped_image = image.crop(crop_rect)
     
-    # Resize image to width x height
-    sized_image = cropped_image.resize((width, height), Image.ANTIALIAS)
+        # Resize image to width x height
+        sized_image = cropped_image.resize((width, height), Image.ANTIALIAS)
     
     # Fill in cells based on luminosity value of pixels
     min_luma = 255
