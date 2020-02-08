@@ -54,8 +54,8 @@ class PicrossServer(object):
                 image_height = int(image_height)
         try:
             board = load_board(path.join(SERVER_ROOT, PUZZLE_DIR, puzzle), image_width, image_height)
-        except IOError, err:
-            print err
+        except IOError as err:
+            print(err)
             return 'Could not read from the requested file. <a href="/">Back</a>'
         
         # Get the available puzzles
@@ -99,8 +99,8 @@ class PicrossServer(object):
             try:
                 moves = self.solver.get_next_moves(board)
                 return jsonio.moves_to_json(moves)
-            except Exception, e:
-                print e
+            except Exception as e:
+                print(e)
                 return '{"error": "Can\'t find a solution for this puzzle."}'
 
 

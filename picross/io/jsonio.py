@@ -34,24 +34,24 @@ def board_to_json(board):
 def json_to_board(json_str):
     try:
         json_obj = json.loads(json_str)
-    except ValueError, e:
-        print 'Failed to load board: Invalid json string %s' % json_str
+    except ValueError as e:
+        print('Failed to load board: Invalid json string %s' % json_str)
         return None
     if 'topHints' not in json_obj or 'sideHints' not in json_obj or 'rows' not in json_obj:
-        print 'Failed to load board: Missing properties in json object %s' % json_obj
+        print('Failed to load board: Missing properties in json object %s' % json_obj)
         return None
     
     top_hints = json_obj['topHints']
     side_hints = json_obj['sideHints']
     rows = json_obj['rows']
     if type(top_hints) != list or type(side_hints) != list or type(rows) != list:
-        print 'Failed to load board: non-list types in json object %s' % json_obj
+        print('Failed to load board: non-list types in json object %s' % json_obj)
         return None
     
     board_width = len(top_hints)
     board_height = len(side_hints)
     if board_width * board_height == 0:
-        print 'Failed to load board: zero-length hints in json object %s' % json_obj
+        print('Failed to load board: zero-length hints in json object %s' % json_obj)
         return None
     
     board = Board(board_width, board_height)
@@ -65,14 +65,14 @@ def json_to_board(json_str):
     for row_index in xrange(len(rows)):
         row = rows[row_index]
         if type(row) != list or len(row) != board_width:
-            print 'Failed to load board: invalid row in json object %s' % json_obj
+            print('Failed to load board: invalid row in json object %s' % json_obj)
             return None
         for x in xrange(board_width):
             if 'marking' not in row[x]:
-                print 'Failed to load board: Invalid cell in json object %s' % json_obj
+                print('Failed to load board: Invalid cell in json object %s' % json_obj)
             marking = row[x]['marking']
             if not 0 <= marking <= 2:
-                print 'Failed to load board: invalid cell marking in json object %s' % json_obj
+                print('Failed to load board: invalid cell marking in json object %s' % json_obj)
                 return None
             board.mark_cell(x, row_index, marking)
     return board

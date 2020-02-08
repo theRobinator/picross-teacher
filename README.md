@@ -28,11 +28,14 @@ require logic chains (which are too hard for humans anyway, IMO).
 This program is written in [Cython](http://cython.org), which means that you'll
 need a C compiler installed in order to build it. Once you have that, run
 
-```python setup.py compile --inplace```
+```
+python setup.py develop  # Only the first time
+python setup.py compile --inplace  # Every time
+```
 
 to compile. After you do that, you can run
 
-```python serve.py [puzzle_file_name]```
+```python serve.py```
 
 to launch the web interface at http://localhost:8080.
 
